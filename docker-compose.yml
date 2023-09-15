@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+ item-app: #service aplikasi
+    depends_on: #menunggu item-db up
+      -  item-db 
+    image: item-app:v1 #image yang digunakan
+    container_name: item-app #container name
+    ports: #route port 80 -> 8080
+      - 80:8080
+    working_dir: /app #workdir
+    environment: #env var
+      DB_HOST: item-db
+    networks: #network yang digunakan
+      - demo-app
+      
+ item-db: #service mongo-db
+    image: mongo:3 #image yang digunakan
+    container_name: item-db #container name
+    ports: #route port 27017 -> 276017
+      - 27017:27017
+    volumes: #volumes
+      - app-db:/data/db
+    networks: #network yang digunakan
+      - demo-app
+
+volumes: #volume
+  app-db:
+
+networks: #network
+  demo-app:
